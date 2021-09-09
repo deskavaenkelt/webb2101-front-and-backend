@@ -100,7 +100,7 @@ function getUserById(id) {
 }
 
 function updateUser(userData) {
-    const index = getUserIndex(userData.id)
+    const index = getUserIndex(Number(userData.id))
 
     if (index === -1) {
         return messageUserNotFound()
@@ -169,3 +169,5 @@ app.delete('/users/:id', function (req, res) {
 app.listen(port, () => {
     console.log(`The server is running on port ${ port }`)
 })
+
+

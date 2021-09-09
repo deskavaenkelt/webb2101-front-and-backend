@@ -21,6 +21,16 @@ function App() {
             })
     }
 
+    function getUsers(){
+        http.get('/users')
+            .then(function (response) {
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+
     return (
         <div>
             <h1>Users API with Axios</h1>
@@ -32,6 +42,7 @@ function App() {
             } }>New text
             </button>
             <button onClick={ alive }>alive</button>
+            <button onClick={ getUsers }>getUsers</button>
         </div>
     );
 }

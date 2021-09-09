@@ -21,7 +21,7 @@ function App() {
             })
     }
 
-    function getUsers(){
+    function getUsers() {
         http.get('/users')
             .then(function (response) {
                 console.log(response.data)
@@ -31,8 +31,23 @@ function App() {
             })
     }
 
-    function getUserById(id){
+    function getUserById(id) {
         http.get(`/users/${ id }`)
+            .then(function (response) {
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+
+    function createUser(name, age, gender) {
+        const payload = {
+            "name": name,
+            "age": age,
+            "gender": gender
+        }
+        http.post('/users', payload)
             .then(function (response) {
                 console.log(response.data)
             })
@@ -53,7 +68,14 @@ function App() {
             </button>
             <button onClick={ alive }>alive</button>
             <button onClick={ getUsers }>getUsers</button>
-            <button onClick={ function() { getUserById(10)} }>getUserById</button>
+            <button onClick={ function () {
+                getUserById(14)
+            } }>getUserById
+            </button>
+            <button onClick={ function () {
+                createUser('Ada', 18, 'Female')
+            } }>createUser
+            </button>
         </div>
     );
 }

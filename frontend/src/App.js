@@ -228,6 +228,21 @@ function App() {
                     </button>
                 </section>
 
+                <section>
+                    <h1>Radera en användare</h1>
+
+                    Id: <input type='number'
+                                 id='id'
+                                 value={id}
+                                 onChange={ event => setId(event.target.value) }/>
+                    <br/>
+
+                    <button onClick={ function () {
+                        deleteUserById(id)
+                    } }>Delete user
+                    </button>
+                </section>
+
             </div>
         </div>
     );

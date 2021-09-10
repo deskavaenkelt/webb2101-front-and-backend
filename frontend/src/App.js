@@ -1,11 +1,12 @@
 import './App.css';
 import { useState } from "react";
 import http from './utils/api/UsersApi'
+import { JsonToTable} from "react-json-to-table";
 
 function App() {
     const [text, setText] = useState('paragraph')
-    const [showAllUsers, setShowAllUsers] = useState()
-    const [usersTable, setUsersTable] = useState()
+    const [allUsers, setAllUsers] = useState()
+    const [oneUser, setOneUser] = useState()
     const [id, setId] = useState(14)
     const [name, setName] = useState('Ada')
     const [age, setAge] = useState(18)
@@ -32,7 +33,7 @@ function App() {
         http.get('/users')
             .then(function (response) {
                 console.log(response.data)
-                setShowAllUsers(response.data)
+                setAllUsers(response.data)
             })
             .catch(function (error) {
                 console.log(error)
@@ -43,6 +44,7 @@ function App() {
         http.get(`/users/${ userId }`)
             .then(function (response) {
                 console.log(response.data)
+                setOneUser(response.data)
             })
             .catch(function (error) {
                 console.log(error)
@@ -92,44 +94,6 @@ function App() {
             })
     }
 
-    function createTable() {
-        http.get('/users')
-            .then(function (response) {
-                console.log(response.data)
-                setShowAllUsers(response.data)
-
-                let tableData = ''
-
-                for (let i = 0; i < response.data.length; i++) {
-                    tableData += `
-                <tr>
-                    <td>${ response.data[i].id }</td>
-                    <td>${ response.data[i].name }</td>
-                    <td>${ response.data[i].age }</td>
-                    <td>${ response.data[i].gender }</td>
-                </tr>`
-                }
-
-                let returnTable = `
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Gender</th>
-                </tr>
-                { tableData }
-            </table>`
-
-                setUsersTable(returnTable)
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
-
-
-    }
-
     return (
         <div>
             <div>
@@ -163,9 +127,22 @@ function App() {
             <div>
                 <section>
                     <h1>Hämta alla användare</h1>
-                    <button onClick={ createTable }>getUsers</button>
+                    <button onClick={ getUsers }>getUsers</button>
                     <br/>
-                    <div>{ usersTable }</div>
+                    <JsonToTable json={allUsers}/>
+                </section>
+
+                <section>
+                    <h1>Hämta en användare</h1>
+                    Id: <input type='number'
+                               id='id'
+                               value={ id }
+                               onChange={ event => setId(event.target.value) }/>
+                    <button onClick={ function () {
+                        getUserById(id)
+                    } }>getUser</button>
+                    <br/>
+                    <JsonToTable json={oneUser}/>
                 </section>
 
                 <section>
@@ -173,19 +150,19 @@ function App() {
 
                     Name: <input type='text'
                                  id='name'
-                                 value={name}
+                                 value={ name }
                                  onChange={ event => setName(event.target.value) }/>
                     <br/>
 
                     Age: <input type='number'
                                 id='age'
-                                value={age}
+                                value={ age }
                                 onChange={ event => setAge(Number(event.target.value)) }/>
                     <br/>
 
                     Gender: <input type='text'
                                    id='gender'
-                                   value={gender}
+                                   value={ gender }
                                    onChange={ event => setGender(event.target.value) }/>
                     <br/>
 
@@ -199,26 +176,26 @@ function App() {
                     <h1>Uppdatera en användare</h1>
 
                     Id: <input type='number'
-                                 id='id'
-                                 value={id}
-                                 onChange={ event => setId(event.target.value) }/>
+                               id='id'
+                               value={ id }
+                               onChange={ event => setId(event.target.value) }/>
                     <br/>
 
                     Name: <input type='text'
                                  id='name'
-                                 value={name}
+                                 value={ name }
                                  onChange={ event => setName(event.target.value) }/>
                     <br/>
 
                     Age: <input type='number'
                                 id='age'
-                                value={age}
+                                value={ age }
                                 onChange={ event => setAge(event.target.value) }/>
                     <br/>
 
                     Gender: <input type='text'
                                    id='gender'
-                                   value={gender}
+                                   value={ gender }
                                    onChange={ event => setGender(event.target.value) }/>
                     <br/>
 
@@ -232,9 +209,9 @@ function App() {
                     <h1>Radera en användare</h1>
 
                     Id: <input type='number'
-                                 id='id'
-                                 value={id}
-                                 onChange={ event => setId(event.target.value) }/>
+                               id='id'
+                               value={ id }
+                               onChange={ event => setId(event.target.value) }/>
                     <br/>
 
                     <button onClick={ function () {
@@ -249,3 +226,4 @@ function App() {
 }
 
 export default App;
+
